@@ -1,5 +1,6 @@
 import 'package:final_project/res/globle.dart';
 import 'package:final_project/view/screen/Home_Page.dart';
+import 'package:final_project/view/screen/cart_page.dart';
 import 'package:final_project/view/screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,7 @@ void main() async {
         routes: {
           '/': (context) => const Home_Page(),
           'splash_screen': (context) => const splash_screen(),
+          'Cart_Page': (context) => const Cart_Page(),
         },
       ),
     ),

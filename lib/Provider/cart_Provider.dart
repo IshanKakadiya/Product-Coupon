@@ -3,13 +3,12 @@
 
 import 'package:flutter/material.dart';
 import '../model/product.dart';
+import '../res/globle.dart';
 
 class CartProvider extends ChangeNotifier {
-  List<Product> allcart = [];
-
   get allProduct {
     int totalcount = 0;
-    allcart.forEach((element) {
+    Globle.cartData.forEach((element) {
       totalcount += element.count;
     });
     return totalcount;
@@ -17,8 +16,8 @@ class CartProvider extends ChangeNotifier {
 
   get totalPrice {
     num price = 0;
-    for (int i = 0; i < allcart.length; i++) {
-      price += (allcart[i].price * allcart[i].count);
+    for (int i = 0; i < Globle.cartData.length; i++) {
+      price += (Globle.cartData[i].price * Globle.cartData[i].count);
     }
     return price;
   }
@@ -39,7 +38,7 @@ class CartProvider extends ChangeNotifier {
   void RemoveFromCart({required Product product}) {
     product.count = 0;
 
-    allcart.remove(product);
+    Globle.cartData.remove(product);
 
     notifyListeners();
   }
@@ -48,7 +47,7 @@ class CartProvider extends ChangeNotifier {
     if (product.count >= 1) {
     } else {
       product.count++;
-      allcart.add(product);
+      Globle.cartData.add(product);
 
       notifyListeners();
     }

@@ -70,24 +70,15 @@ class Product_Helper {
   Future<int> updateRecord({required Product data, required int id}) async {
     await initDB();
 
-    String query =
-        "UPDATE $productTable SET $colID=? , $colProcuctName=? , $colPrice =? , $colCount=? , $colImage=? , $colStock=? , $colisAdd=? WHERE $colID=?";
-    List args = [
-      data.id,
-      data.productName,
-      data.price,
-      data.count,
-      data.image,
-      data.stock,
-      data.isAdd
-    ];
+    String query = "UPDATE $productTable SET  $colisAdd=? WHERE $colIDAuto=?";
+    List args = [data.isAdd, id];
 
     return db!.rawUpdate(query, args);
   }
 
   Future<int> deleteRecode({required int id}) async {
     await initDB();
-    String query = "DELETE FROM $productTable WHERE $colID=?";
+    String query = "DELETE FROM $productTable WHERE $colIDAuto=?";
     List aegs = [id];
 
     return db!.rawDelete(query, aegs);

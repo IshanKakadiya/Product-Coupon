@@ -53,10 +53,6 @@ class _splash_screenState extends State<splash_screen> {
                     Product_Helper.product_helper.insertRecord(data: e);
                   });
 
-                  print("--------");
-                  print("--------");
-                  print("--------");
-
                   Navigator.of(context).pushReplacementNamed('/');
                   pres.setBool('data', true);
                 } else {

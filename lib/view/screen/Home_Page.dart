@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types, unused_local_variable, no_leading_underscores_for_local_identifiers
+// ignore_for_file: camel_case_types, unused_local_variable, no_leading_underscores_for_local_identifiers, use_build_context_synchronously
 
 import 'package:final_project/helper/product_helper.dart';
 import 'package:final_project/model/product.dart';
@@ -170,8 +170,7 @@ class _Home_PageState extends State<Home_Page> {
                         InkWell(
                           onTap: () {
                             setState(() {
-                              Navigator.of(context)
-                                  .pushNamed('CartShoping_Page');
+                              Navigator.of(context).pushNamed('Cart_Page');
                             });
                           },
                           child: Ink(
@@ -200,7 +199,7 @@ class _Home_PageState extends State<Home_Page> {
                                     ),
                                     alignment: Alignment.center,
                                     child: Text(
-                                      "4",
+                                      Globle.cartData.length.toString(),
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -222,7 +221,7 @@ class _Home_PageState extends State<Home_Page> {
                     width: _width,
                     padding: const EdgeInsets.all(10),
                     child: GridView.builder(
-                      itemCount: data!.length,
+                      itemCount: data.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
@@ -252,6 +251,7 @@ class _Home_PageState extends State<Home_Page> {
                                 children: [
                                   Image.asset(
                                     data[i].image,
+                                    height: 70,
                                     width: 70,
                                   ),
                                 ],
@@ -277,26 +277,30 @@ class _Home_PageState extends State<Home_Page> {
                                   InkWell(
                                     onTap: () async {
                                       if (data[i].isAdd == "false") {
-                                        // Map<String, dynamic> product = {
-                                        //   // "id": productData[i]["id"],
-                                        //   // "productName": productData[i]
-                                        //   //     // ["productName"],
-                                        //   // "image": productData[i]
-                                        //   //     ["image"],
-                                        //   // "price": productData[i]
-                                        //   //     ["price"],
-                                        //   // "stock": productData[i]
-                                        //   //     ["stock"],
-                                        //   "count":
-                                        //       (productData[i]["count"] == 0)
-                                        //           ? 1
-                                        //           : productData[i]["count"],
-                                        //   "isAdd": true,
-                                        // };
-                                        // await AddProdutsHelper.addProdutsHelper
-                                        //     .updateProduct(
-                                        //         product: product,
-                                        //         id: productData[i].id);
+                                        int? id = await Product_Helper
+                                            .product_helper
+                                            .updateRecord(
+                                          data: Product(
+                                            id: data[i].id,
+                                            image: data[i].image,
+                                            productName: data[i].productName,
+                                            price: data[i].price,
+                                            stock: data[i].stock,
+                                            isAdd: "true",
+                                          ),
+                                          id: data[i].id,
+                                        );
+
+                                        Globle.cartData.add(
+                                          Product(
+                                            id: data[i].id,
+                                            image: data[i].image,
+                                            productName: data[i].productName,
+                                            price: data[i].price,
+                                            stock: data[i].stock,
+                                            isAdd: "true",
+                                          ),
+                                        );
                                       }
                                     },
                                     child: Ink(

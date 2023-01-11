@@ -2,7 +2,15 @@ import '../model/product.dart';
 
 class Globle {
   static bool data = false;
-  static int addProductId = 5;
+  static int addProductId = 1;
+  static List<Product> cartData = [];
+  static List promocode = [
+    {
+      "code": "ishan",
+      "stock": 3,
+      "apply": false,
+    }
+  ];
 
   static List<Map<dynamic, dynamic>> fruits = [
     {'id': 1, 'name': 'Vegetables', 'image': 'assets/vegetable.png'},
@@ -83,7 +91,7 @@ class Globle {
     ),
     Product(
       id: 3,
-      image: 'assets/Fungi.png',
+      image: 'assets/mushroom (1).png',
       productName: "fungi",
       price: 99,
       stock: 110,
