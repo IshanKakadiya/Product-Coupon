@@ -1,4 +1,6 @@
-// ignore_for_file: camel_case_types, no_leading_underscores_for_local_identifiers, use_build_context_synchronously, unused_local_variable, avoid_function_literals_in_foreach_calls
+// ignore_for_file: camel_case_types, no_leading_underscores_for_local_identifiers, use_build_context_synchronously, unused_local_variable, avoid_function_literals_in_foreach_calls, avoid_print
+
+import 'dart:ffi';
 
 import 'package:final_project/helper/product_helper.dart';
 import 'package:flutter/material.dart';
@@ -47,15 +49,28 @@ class _splash_screenState extends State<splash_screen> {
             InkWell(
               onTap: () async {
                 SharedPreferences pres = await SharedPreferences.getInstance();
+                Globle.data = pres.getBool('data') ?? false;
 
                 if (Globle.data == false) {
                   Globle.products.forEach((e) {
                     Product_Helper.product_helper.insertRecord(data: e);
                   });
 
+                  Globle.promocode.forEach((e) {
+                    Product_Helper.product_helper.insertCouponData(data: e);
+                  });
+
+                  print("---------------");
+                  print("True");
+                  print("---------------");
+
                   Navigator.of(context).pushReplacementNamed('/');
-                  pres.setBool('data', true);
+                  // Set
+                  await pres.setBool('data', true);
                 } else {
+                  print("---------------");
+                  print("False");
+                  print("---------------");
                   Navigator.of(context).pushReplacementNamed('/');
                 }
               },

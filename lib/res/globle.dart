@@ -1,17 +1,21 @@
+import 'package:final_project/model/coupon.dart';
+
 import '../model/product.dart';
 
 class Globle {
   static bool data = false;
   static int addProductId = 1;
   static List<Product> cartData = [];
+  static List<Coupon> couponCode = [];
+
+  // Coupon
   static List promocode = [
-    {
-      "code": "ishan",
-      "stock": 3,
-      "apply": false,
-    }
+    Coupon(code: "Ishan", stock: 30),
+    Coupon(code: "Ishan003", stock: 3),
+    Coupon(code: "Ishan24", stock: 5),
   ];
 
+  // Product
   static List<Map<dynamic, dynamic>> fruits = [
     {'id': 1, 'name': 'Vegetables', 'image': 'assets/vegetable.png'},
     {'id': 2, 'name': 'Fruit', 'image': 'assets/fruit.png'},

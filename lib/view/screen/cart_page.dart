@@ -1,6 +1,5 @@
-// ignore_for_file: camel_case_types, prefer_final_fields, no_leading_underscores_for_local_identifiers, unused_local_variable
+// ignore_for_file: camel_case_types, prefer_final_fields, no_leading_underscores_for_local_identifiers, unused_local_variable, avoid_print
 
-import 'package:final_project/Provider/cart_Provider.dart';
 import 'package:final_project/view/screen/Home_Page.dart';
 import "package:flutter/material.dart";
 import '../../helper/product_helper.dart';
@@ -19,6 +18,7 @@ class _Cart_PageState extends State<Cart_Page> {
   void initState() {
     super.initState();
     getAllData = Product_Helper.product_helper.fetchRecord();
+    getCouponData = Product_Helper.product_helper.fetchCouponData();
   }
 
   get totalPrice {
@@ -27,8 +27,8 @@ class _Cart_PageState extends State<Cart_Page> {
       price += (Globle.cartData[i].price * Globle.cartData[i].count);
     }
 
-    for (var code in Globle.promocode) {
-      if (code["apply"] == true) {
+    for (var code in Globle.couponCode) {
+      if (code.apply == "true") {
         price = price - (price * 10) / 100;
       }
     }
@@ -71,14 +71,19 @@ class _Cart_PageState extends State<Cart_Page> {
                               return "Enter Promocode";
                             }
 
-                            for (var code in Globle.promocode) {
-                              if (val != code["code"]) {
-                                return "Enter Valid Code";
+                            for (int i = 0; i < Globle.couponCode.length; i++) {
+                              if (val == Globle.couponCode[i].code) {
+                                break;
+                              } else {
+                                if (i == Globle.couponCode.length) {
+                                  return "Enter Valid Code";
+                                }
+                                continue;
                               }
                             }
 
-                            for (var code in Globle.promocode) {
-                              if (code["stock"] <= 0) {
+                            for (var code in Globle.couponCode) {
+                              if (code.stock <= 0) {
                                 return "Promocode Expired";
                               }
                             }
@@ -94,13 +99,16 @@ class _Cart_PageState extends State<Cart_Page> {
                         ),
                         OutlinedButton(
                           child: const Text("Apply"),
-                          onPressed: () {
+                          onPressed: () async {
                             if (promocodeKey.currentState!.validate()) {
                               Navigator.of(context).pop();
-                              for (var code in Globle.promocode) {
-                                if (code["code"] == promocodeController.text) {
-                                  code["stock"]--;
-                                  code["apply"] = true;
+                              for (var code in Globle.couponCode) {
+                                if (code.code == promocodeController.text) {
+                                  code.stock--;
+                                  code.apply = "true";
+
+                                  await Product_Helper.product_helper
+                                      .updateCouponData(data: code);
                                 }
                               }
                             }
@@ -128,6 +136,14 @@ class _Cart_PageState extends State<Cart_Page> {
                 Globle.cartData.add(product);
               }
             }
+
+            print("---------");
+            print(Globle.couponCode[0].code);
+            print(Globle.couponCode[1].code);
+            print(Globle.couponCode[1].stock);
+            print(Globle.couponCode[1].apply);
+            print(Globle.couponCode[2].code);
+            print("---------");
 
             return Column(
               children: [
